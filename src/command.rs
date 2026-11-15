@@ -17,6 +17,8 @@ pub enum AppCommand {
     /// the live drawable size from the window itself, which is already adjusted
     /// for the toolbar and DPI.
     Resize,
+    #[cfg(target_os = "windows")]
+    ToggleMaximized,
     Browser(BrowserCommand),
     Input(InputCommand),
     Menu(MenuAction),
@@ -52,6 +54,8 @@ impl AppCommand {
             | AppCommand::QuickAccess(_)
             | AppCommand::GameInputMaps(_)
             | AppCommand::GameMapEdit(_) => true,
+            #[cfg(target_os = "windows")]
+            AppCommand::ToggleMaximized => false,
             AppCommand::Browser(_)
             | AppCommand::Menu(_)
             | AppCommand::ToggleBookmark

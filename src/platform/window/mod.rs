@@ -57,7 +57,7 @@ trait WindowBackend {
     fn on_event(&mut self, event: &sdl2::event::Event) -> EventResponse;
     #[cfg(target_os = "android")]
     fn sync_egui_window_size(&mut self);
-    #[cfg(target_os = "android")]
+    #[cfg(any(target_os = "android", target_os = "windows"))]
     fn window_mut(&mut self) -> &mut sdl2::video::Window;
     fn pointer_pos_in_points(&self) -> Option<egui::Pos2>;
     fn paint(&mut self, page_at: (i32, i32), page_painted: bool) -> Option<CompositeTiming>;
@@ -122,6 +122,16 @@ impl AppWindow {
 
     pub fn sdl2_window(&self) -> &sdl2::video::Window {
         self.backend.window()
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn toggle_maximized(&mut self) {
+        let window = self.backend.window_mut();
+        if window.is_maximized() {
+            window.restore();
+        } else {
+            window.maximize();
+        }
     }
 
     /// The context Servo renders into: an FBO in our GL context, or swgl's CPU

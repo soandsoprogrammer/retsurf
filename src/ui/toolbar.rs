@@ -300,6 +300,8 @@ fn is_key_pressed(ui: &mut egui::Ui, response: egui::Response, key: egui::Key) -
 /// What one toolbar frame shows, snapshotted by the caller — one bundle, so
 /// the panel and overlay spellings can't drift argument by argument.
 pub(super) struct ToolbarInputs {
+    #[cfg(target_os = "windows")]
+    pub maximized: bool,
     pub tab_count: usize,
     /// Downloads still in flight; a count chip that jumps to the section.
     pub active_downloads: usize,
@@ -352,6 +354,21 @@ fn toolbar_contents(
                 |ui| {
                     // A freshly allocated ui does not inherit the row's floor.
                     ui.set_min_height(ROW_H);
+                    #[cfg(target_os = "windows")]
+                    {
+                        let (glyph, label) = if inputs.maximized {
+                            (bold::COPY, "还原窗口")
+                        } else {
+                            (bold::SQUARE, "最大化窗口")
+                        };
+                        if ui
+                            .add(new_toolbar_button(icon(glyph)))
+                            .on_hover_text(label)
+                            .clicked()
+                        {
+                            commands.push(AppCommand::ToggleMaximized);
+                        }
+                    }
                     if ui.add(new_toolbar_button(icon(bold::DOTS_THREE))).clicked() {
                         commands.push(AppCommand::QuickAccess(QuickAccessAction::Toggle(
                             Strip::QuickAccess,

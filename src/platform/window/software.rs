@@ -274,7 +274,7 @@ impl WindowBackend for SoftwareBackend {
         self.egui.state.sync_window_size(self.canvas.window());
     }
 
-    #[cfg(target_os = "android")]
+    #[cfg(any(target_os = "android", target_os = "windows"))]
     fn window_mut(&mut self) -> &mut sdl2::video::Window {
         self.canvas.window_mut()
     }

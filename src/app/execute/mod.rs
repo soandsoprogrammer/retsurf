@@ -31,6 +31,8 @@ impl App {
         }
         match command {
             AppCommand::Shutdown => self.shutdown(),
+            #[cfg(target_os = "windows")]
+            AppCommand::ToggleMaximized => self.window.toggle_maximized(),
             // On a window resize, size the browser to the new central area straight
             // away from the actual window (egui's reactive sizing can lag a frame).
             AppCommand::Resize => {

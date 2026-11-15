@@ -642,6 +642,8 @@ impl AppUi {
             } = self.toolbar_layout(chrome_hidden);
             // The `self.update` borrow can't overlap the `self`-borrowing closure.
             let update = self.update.snapshot();
+            #[cfg(target_os = "windows")]
+            let maximized = window.sdl2_window().is_maximized();
             window.run_ui(|ctx| {
                 let ppp = ctx.pixels_per_point();
                 let mut root = egui::Ui::new(
@@ -652,6 +654,8 @@ impl AppUi {
                 root.set_clip_rect(ctx.content_rect());
 
                 let inputs = toolbar::ToolbarInputs {
+                    #[cfg(target_os = "windows")]
+                    maximized,
                     tab_count,
                     active_downloads: self.menu.downloads.active_count(),
                     zoom_pct,

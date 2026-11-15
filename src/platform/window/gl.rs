@@ -206,7 +206,7 @@ impl WindowBackend for GlBackend {
         self.egui.state.sync_window_size(&self.window);
     }
 
-    #[cfg(target_os = "android")]
+    #[cfg(any(target_os = "android", target_os = "windows"))]
     fn window_mut(&mut self) -> &mut sdl2::video::Window {
         &mut self.window
     }
