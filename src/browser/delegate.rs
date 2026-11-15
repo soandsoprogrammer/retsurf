@@ -207,6 +207,22 @@ impl servo::WebViewDelegate for AppBrowserInner {
         let req = load.request();
         let url = req.url.as_url().clone();
 
+        #[cfg(target_os = "windows")]
+        if req.destination == Destination::Font && url.as_str() == super::cjk_font::URL {
+            let mut headers = http::HeaderMap::new();
+            headers.insert(
+                http::header::CONTENT_TYPE,
+                http::HeaderValue::from_static("font/ttf"),
+            );
+            headers.insert(
+                http::header::ACCESS_CONTROL_ALLOW_ORIGIN,
+                http::HeaderValue::from_static("*"),
+            );
+            let response = servo::WebResourceResponse::new(url).headers(headers);
+            finish_intercepted(load, response, super::cjk_font::BYTES.to_vec());
+            return;
+        }
+
         // Ahead of adblock and the image cap.
         if let Some(site) = self.local_site.as_ref().filter(|site| site.owns(&url)) {
             site.serve(load);

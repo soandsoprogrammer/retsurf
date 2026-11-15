@@ -13,6 +13,8 @@ pub mod adblock;
 mod blob_download;
 pub mod content_filter;
 
+#[cfg(target_os = "windows")]
+pub(crate) mod cjk_font;
 mod command;
 mod compositing;
 mod delegate;
@@ -311,6 +313,8 @@ impl AppBrowserInner {
             GAMEPAD_COMPAT_JS.to_string(),
             None,
         )));
+        #[cfg(target_os = "windows")]
+        user_content.add_stylesheet(cjk_font::stylesheet());
         let forced_dark = forced_dark::stylesheet();
         if browser.page_theme.is_forced_dark() {
             user_content.add_stylesheet(forced_dark.clone());

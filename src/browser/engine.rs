@@ -73,12 +73,24 @@ pub(super) fn build_preferences(
     #[cfg(target_os = "windows")]
     if let Some(windows) = std::env::var_os("WINDIR") {
         let fonts = std::path::PathBuf::from(windows).join("Fonts");
-        if fonts.join("msyh.ttc").is_file() {
-            prefs.fonts_default = "Microsoft YaHei".into();
-            prefs.fonts_sans_serif = "Microsoft YaHei".into();
+        let sans = [
+            ("NotoSansSC-VF.ttf", "Noto Sans SC"),
+            ("msyh.ttc", "Microsoft YaHei"),
+        ]
+        .into_iter()
+        .find(|(file, _)| fonts.join(file).is_file());
+        if let Some((_, family)) = sans {
+            prefs.fonts_default = family.into();
+            prefs.fonts_sans_serif = family.into();
         }
-        if fonts.join("simsun.ttc").is_file() {
-            prefs.fonts_serif = "SimSun".into();
+        let serif = [
+            ("NotoSerifSC-VF.ttf", "Noto Serif SC"),
+            ("simsun.ttc", "SimSun"),
+        ]
+        .into_iter()
+        .find(|(file, _)| fonts.join(file).is_file());
+        if let Some((_, family)) = serif {
+            prefs.fonts_serif = family.into();
         }
     }
 

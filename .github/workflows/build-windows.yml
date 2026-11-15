@@ -2,7 +2,7 @@ name: Windows
 
 on:
   push:
-    branches: [zh-cn]
+    branches: [zh-embedded-fonts]
   workflow_dispatch:
   workflow_call:
   release:
@@ -71,7 +71,7 @@ jobs:
         run: |
           set -eux
           mkdir -p dist
-          cp target/release/retsurf.exe dist/
+          cp target/release/retsurf.exe resources/fonts/OFL-NotoSansSC.txt dist/
           ls -la dist/
 
       # Upload the raw binary; upload-artifact archives it into a single zip.
@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: retsurf-windows-x86_64
-          path: dist/retsurf.exe
+          path: dist/
           retention-days: 14
 
       - name: Zip for release
