@@ -33,7 +33,7 @@ const ZOOM_FONT: f32 = 12.0;
 const ZOOM_PILL_H: f32 = 20.0;
 
 /// What the empty address field offers.
-const FIELD_HINT: &str = "Search or enter address";
+const FIELD_HINT: &str = "搜索或输入网址";
 
 fn icon(glyph: &str) -> egui::RichText {
     theme::icon(glyph).size(ICON)

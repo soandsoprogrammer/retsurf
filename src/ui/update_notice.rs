@@ -35,7 +35,7 @@ pub(super) fn add_update_notice(
         .show(ctx, |ui| {
             theme::card_frame().show(ui, |ui| {
                 ui.label(
-                    egui::RichText::new("Update available")
+                    egui::RichText::new("有可用更新")
                         .color(egui::Color32::WHITE)
                         .strong(),
                 );

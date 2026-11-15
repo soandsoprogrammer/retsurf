@@ -104,12 +104,12 @@ impl Kind {
     /// name the device it is about, since that is the next thing seen.
     pub fn label(self) -> &'static str {
         match self {
-            Kind::Key => "Keyboard",
-            Kind::Mouse => "Mouse",
-            Kind::Gamepad => "Gamepad",
-            Kind::Passthrough => "Passthrough",
-            Kind::Ignore => "Ignore",
-            Kind::Directions => "Four directions",
+            Kind::Key => "键盘",
+            Kind::Mouse => "鼠标",
+            Kind::Gamepad => "手柄",
+            Kind::Passthrough => "直接传递",
+            Kind::Ignore => "忽略",
+            Kind::Directions => "四个方向",
         }
     }
 
@@ -137,8 +137,8 @@ impl Device {
     /// What the title says after the row's name.
     pub fn title(self) -> &'static str {
         match self {
-            Device::Mouse => "MOUSE",
-            Device::Gamepad => "GAMEPAD",
+            Device::Mouse => "鼠标",
+            Device::Gamepad => "手柄",
         }
     }
 }
@@ -185,19 +185,19 @@ impl MouseKind {
 
     pub fn label(self) -> &'static str {
         match self {
-            MouseKind::ButtonLeft => "Button left",
-            MouseKind::ButtonRight => "Button right",
-            MouseKind::ButtonMiddle => "Button middle",
-            MouseKind::CursorUp => "Cursor up",
-            MouseKind::CursorDown => "Cursor down",
-            MouseKind::CursorLeft => "Cursor left",
-            MouseKind::CursorRight => "Cursor right",
-            MouseKind::ScrollUp => "Scroll up",
-            MouseKind::ScrollDown => "Scroll down",
-            MouseKind::ScrollLeft => "Scroll left",
-            MouseKind::ScrollRight => "Scroll right",
-            MouseKind::Cursor => "Cursor",
-            MouseKind::Scroll => "Scroll",
+            MouseKind::ButtonLeft => "鼠标左键",
+            MouseKind::ButtonRight => "鼠标右键",
+            MouseKind::ButtonMiddle => "鼠标中键",
+            MouseKind::CursorUp => "光标上移",
+            MouseKind::CursorDown => "光标下移",
+            MouseKind::CursorLeft => "光标左移",
+            MouseKind::CursorRight => "光标右移",
+            MouseKind::ScrollUp => "向上滚动",
+            MouseKind::ScrollDown => "向下滚动",
+            MouseKind::ScrollLeft => "向左滚动",
+            MouseKind::ScrollRight => "向右滚动",
+            MouseKind::Cursor => "光标",
+            MouseKind::Scroll => "滚动",
         }
     }
 

@@ -56,7 +56,7 @@ fn rows(screens: &InputMaps) -> Vec<(String, String)> {
     if screens.confirming() {
         return vec![
             (remove_label(screens).to_string(), String::new()),
-            ("Cancel".to_string(), String::new()),
+            ("取消".to_string(), String::new()),
         ];
     }
     // While the keyboard is up, the row it was opened from carries what is
@@ -71,7 +71,7 @@ fn rows(screens: &InputMaps) -> Vec<(String, String)> {
         return std::iter::once(new)
             .chain(screens.rows().iter().map(|row| {
                 let value = match row.in_use {
-                    true => "in use",
+                    true => "正在使用",
                     false => "",
                 };
                 (row.name.clone(), value.to_string())

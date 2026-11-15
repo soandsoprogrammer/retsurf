@@ -42,7 +42,7 @@ pub enum Kind {
         min: i64,
         max: i64,
         step: i64,
-        /// Label shown instead of a bare `0` (e.g. "Unlimited").
+        /// Label shown instead of a bare `0` (e.g. "不限").
         zero: Option<&'static str>,
         get: fn(&AppConfig) -> i64,
         set: fn(&mut AppConfig, i64),
@@ -185,10 +185,10 @@ impl Task {
     /// The verb shown as the row's value — what the confirmed press will do.
     pub fn verb(self) -> &'static str {
         match self {
-            Task::ClearData => "Clear",
-            Task::RestoreDefaults => "Restore",
+            Task::ClearData => "清除",
+            Task::RestoreDefaults => "恢复",
             #[cfg(target_os = "android")]
-            Task::ShareLogs => "Share",
+            Task::ShareLogs => "分享",
         }
     }
 
@@ -248,9 +248,9 @@ impl Field {
 /// A switch's state as a row shows it.
 pub fn on_off(on: bool) -> &'static str {
     if on {
-        "On"
+        "开启"
     } else {
-        "Off"
+        "关闭"
     }
 }
 
@@ -325,9 +325,9 @@ pub fn step(kind: &Kind, config: &mut AppConfig, dx: i32) {
 /// User-Agent presets: the keywords [`crate::config::BrowserConfig::user_agent`]
 /// understands (empty keeps Servo's platform default).
 const UA_CHOICES: &[(&str, &str)] = &[
-    ("Default", ""),
-    ("Desktop", "desktop"),
-    ("Mobile", "mobile"),
+    ("默认", ""),
+    ("桌面", "desktop"),
+    ("移动设备", "mobile"),
     ("iOS", "ios"),
 ];
 
@@ -353,7 +353,7 @@ const SHADER: Kind = Kind::Choice {
 };
 
 /// The Web-features preset choice — derived from the experimental bools (shows
-/// "Custom" when they match no preset); picking a preset rewrites all of them
+/// "自定义" when they match no preset); picking a preset rewrites all of them
 /// (the bools are the source of truth, see [`ExperimentalPreset`]).
 const fn web_features_kind() -> Kind {
     Kind::Choice {
@@ -394,100 +394,100 @@ use SettingsSection as S;
 /// The binding list is not here: it is built dynamically behind a door row.
 #[rustfmt::skip]
 pub(super) static FIELDS: &[Field] = &[
-    f(S::Browser,  "Browser",     "Home page",              text!(browser.home_page), false),
-    f(S::Browser,  "Browser",     "Search URL",             text!(browser.search_page), false),
-    f(S::Browser,  "Browser",     "User agent",             ua_kind(), false).quick(Modes::Browser),
-    f(S::Browser,  "Browser",     "Page zoom",              float!(browser.page_zoom as f32, bounds::PAGE_ZOOM, 0.05, 2), false),
-    f(S::Browser,  "Browser",     "Page theme",             choice!(browser.page_theme: PageTheme), false).quick(Modes::Browser),
-    f(S::Browser,  "Browser",     "Restore tabs",           flag!(browser.restore_tabs), false),
-    f(S::Browser,  "Browser",     "Max tabs",               int!(browser.max_tabs as u32, bounds::MAX_TABS, 1, Some("Unlimited")), false),
-    f(S::Browser,  "Browser",     "Keep site data",         flag!(browser.persist_site_data), true),
+    f(S::Browser,  "浏览器",     "主页",              text!(browser.home_page), false),
+    f(S::Browser,  "浏览器",     "搜索网址模板",             text!(browser.search_page), false),
+    f(S::Browser,  "浏览器",     "用户代理",             ua_kind(), false).quick(Modes::Browser),
+    f(S::Browser,  "浏览器",     "网页缩放",              float!(browser.page_zoom as f32, bounds::PAGE_ZOOM, 0.05, 2), false),
+    f(S::Browser,  "浏览器",     "网页主题",             choice!(browser.page_theme: PageTheme), false).quick(Modes::Browser),
+    f(S::Browser,  "浏览器",     "恢复标签页",           flag!(browser.restore_tabs), false),
+    f(S::Browser,  "浏览器",     "标签页数量上限",               int!(browser.max_tabs as u32, bounds::MAX_TABS, 1, Some("不限")), false),
+    f(S::Browser,  "浏览器",     "保留网站数据",         flag!(browser.persist_site_data), true),
 
-    f(S::Browser,  "Experimental", "Web features",          web_features_kind(), false),
-    f(S::Browser,  "Experimental", "WebGL 2",               flag!(experimental.webgl2), false),
-    f(S::Browser,  "Experimental", "WebGPU",                flag!(experimental.webgpu), false),
-    f(S::Browser,  "Experimental", "OffscreenCanvas",       flag!(experimental.offscreen_canvas), false),
-    f(S::Browser,  "Experimental", "CSS columns",           flag!(experimental.columns), false),
-    f(S::Browser,  "Experimental", "Container queries",     flag!(experimental.container_queries), false),
-    f(S::Browser,  "Experimental", "Web fonts",              flag!(experimental.fontface), false),
-    f(S::Browser,  "Experimental", "IntersectionObserver",  flag!(experimental.intersection_observer), false),
-    f(S::Browser,  "Experimental", "ResizeObserver",        flag!(experimental.resize_observer), false),
-    f(S::Browser,  "Experimental", "IndexedDB",             flag!(experimental.indexeddb), false),
-    f(S::Browser,  "Experimental", "StorageManager",        flag!(experimental.storage_manager), false),
-    f(S::Browser,  "Experimental", "Notifications",         flag!(experimental.notification), false),
-    f(S::Browser,  "Experimental", "Async clipboard",       flag!(experimental.async_clipboard), false),
-    f(S::Browser,  "Experimental", "Permissions",           flag!(experimental.permissions), false),
+    f(S::Browser,  "实验性功能", "网页功能",          web_features_kind(), false),
+    f(S::Browser,  "实验性功能", "WebGL 2",               flag!(experimental.webgl2), false),
+    f(S::Browser,  "实验性功能", "WebGPU",                flag!(experimental.webgpu), false),
+    f(S::Browser,  "实验性功能", "OffscreenCanvas",       flag!(experimental.offscreen_canvas), false),
+    f(S::Browser,  "实验性功能", "CSS 多列布局",           flag!(experimental.columns), false),
+    f(S::Browser,  "实验性功能", "容器查询",     flag!(experimental.container_queries), false),
+    f(S::Browser,  "实验性功能", "网页字体",              flag!(experimental.fontface), false),
+    f(S::Browser,  "实验性功能", "IntersectionObserver",  flag!(experimental.intersection_observer), false),
+    f(S::Browser,  "实验性功能", "ResizeObserver",        flag!(experimental.resize_observer), false),
+    f(S::Browser,  "实验性功能", "IndexedDB",             flag!(experimental.indexeddb), false),
+    f(S::Browser,  "实验性功能", "StorageManager",        flag!(experimental.storage_manager), false),
+    f(S::Browser,  "实验性功能", "通知",         flag!(experimental.notification), false),
+    f(S::Browser,  "实验性功能", "异步剪贴板",       flag!(experimental.async_clipboard), false),
+    f(S::Browser,  "实验性功能", "权限",           flag!(experimental.permissions), false),
 
-    f(S::Gaming, "Game Mode",   "Input map",              Kind::Door { door: Door::InputMaps }, false),
-    f(S::Gaming, "Game Mode",   "Scaling",                choice!(game_mode.view.scaling: Scaling), false).quick(Modes::Game),
-    f(S::Gaming, "Game Mode",   "Shader",                 SHADER, false).shaders().quick(Modes::Game),
+    f(S::Gaming, "游戏模式",   "按键映射",              Kind::Door { door: Door::InputMaps }, false),
+    f(S::Gaming, "游戏模式",   "画面缩放",                choice!(game_mode.view.scaling: Scaling), false).quick(Modes::Game),
+    f(S::Gaming, "游戏模式",   "着色器",                 SHADER, false).shaders().quick(Modes::Game),
 
-    f(S::Interface, "Interface",  "Interface scale",        float!(interface.scale as f32, bounds::SCALE, bounds::SCALE_STEP, 2), false),
-    f(S::Interface, "Interface",  "Toolbar position",       choice!(interface.toolbar_position: ToolbarPosition), false),
-    f(S::Interface, "Interface",  "Auto-hide toolbar",      flag!(interface.toolbar_autohide), false),
-    f(S::Interface, "Interface",  "Home style",             choice!(interface.home_style: HomeStyle), false),
-    f(S::Interface, "Interface",  "Page icons",             flag!(interface.page_icons), false),
-    f(S::Interface, "Interface",  "Cursor linger (ms)",     int!(interface.cursor_linger_ms as u64, bounds::CURSOR_LINGER_MS, 100), false),
+    f(S::Interface, "界面",  "界面缩放",        float!(interface.scale as f32, bounds::SCALE, bounds::SCALE_STEP, 2), false),
+    f(S::Interface, "界面",  "工具栏位置",       choice!(interface.toolbar_position: ToolbarPosition), false),
+    f(S::Interface, "界面",  "自动隐藏工具栏",      flag!(interface.toolbar_autohide), false),
+    f(S::Interface, "界面",  "主页样式",             choice!(interface.home_style: HomeStyle), false),
+    f(S::Interface, "界面",  "网页图标",             flag!(interface.page_icons), false),
+    f(S::Interface, "界面",  "光标停留时间（毫秒）",     int!(interface.cursor_linger_ms as u64, bounds::CURSOR_LINGER_MS, 100), false),
 
     // No sub-header: the door belongs to no group.
     f(S::Controls, "",            "Button bindings",        Kind::Door { door: Door::Bindings }, false),
 
-    f(S::Controls, "Gamepad",     "Gamepad layout",         choice!(controls.pad_layout: PadLayout), false),
-    f(S::Controls, "Gamepad",     "Swap A/B and X/Y",       flag!(controls.swap_face_buttons), false),
-    f(S::Controls, "Gamepad",     "Stick dead zone",        float!(controls.deadzone as f32, bounds::DEADZONE, 0.05, 2), false),
-    f(S::Controls, "Gamepad",     "Trigger threshold",      float!(controls.trigger_threshold as f32, bounds::TRIGGER_THRESHOLD, 0.05, 2), false),
-    f(S::Controls, "Gamepad",     "Hold gesture (ms)",      int!(controls.hold_ms as u64, bounds::HOLD_MS, 50), false),
-    f(S::Controls, "Gamepad",     "Gamepad rumble",         flag!(controls.haptics), false),
+    f(S::Controls, "手柄",     "手柄布局",         choice!(controls.pad_layout: PadLayout), false),
+    f(S::Controls, "手柄",     "交换 A/B 和 X/Y",       flag!(controls.swap_face_buttons), false),
+    f(S::Controls, "手柄",     "摇杆死区",        float!(controls.deadzone as f32, bounds::DEADZONE, 0.05, 2), false),
+    f(S::Controls, "手柄",     "扳机阈值",      float!(controls.trigger_threshold as f32, bounds::TRIGGER_THRESHOLD, 0.05, 2), false),
+    f(S::Controls, "手柄",     "长按时间（毫秒）",      int!(controls.hold_ms as u64, bounds::HOLD_MS, 50), false),
+    f(S::Controls, "手柄",     "手柄振动",         flag!(controls.haptics), false),
 
-    f(S::Controls, "Cursor & scroll", "Cursor mode",        choice!(controls.cursor_mode: CursorMode), true),
-    f(S::Controls, "Cursor & scroll", "Cursor speed",       float!(controls.cursor_speed as f32, bounds::CURSOR_SPEED, 50.0, 0), false),
-    f(S::Controls, "Cursor & scroll", "Scroll speed",       float!(controls.scroll_speed as f32, bounds::SCROLL_SPEED, 100.0, 0), false),
-    f(S::Controls, "Cursor & scroll", "Edge scrolling",     flag!(controls.edge_scroll), false),
-    f(S::Controls, "Cursor & scroll", "Hint badges",        flag!(controls.hint_badges), false),
+    f(S::Controls, "光标和滚动", "光标模式",        choice!(controls.cursor_mode: CursorMode), true),
+    f(S::Controls, "光标和滚动", "光标速度",       float!(controls.cursor_speed as f32, bounds::CURSOR_SPEED, 50.0, 0), false),
+    f(S::Controls, "光标和滚动", "滚动速度",       float!(controls.scroll_speed as f32, bounds::SCROLL_SPEED, 100.0, 0), false),
+    f(S::Controls, "光标和滚动", "边缘滚动",     flag!(controls.edge_scroll), false),
+    f(S::Controls, "光标和滚动", "链接提示标记",        flag!(controls.hint_badges), false),
 
-    f(S::Controls, "Keyboard",    "On-screen keyboard",     choice!(osk.style: OskStyle), false),
+    f(S::Controls, "键盘",    "屏幕键盘",     choice!(osk.style: OskStyle), false),
     #[cfg(target_os = "android")]
-    f(S::Controls, "Keyboard",    "System keyboard",        flag!(controls.system_keyboard), false),
-    f(S::Controls, "Keyboard",    "Stick threshold",        float!(controls.osk_nav_threshold as f32, bounds::OSK_NAV_THRESHOLD, 0.05, 2), false),
-    f(S::Controls, "Keyboard",    "Repeat delay (ms)",      int!(controls.osk_nav_initial_delay_ms as u64, bounds::OSK_NAV_INITIAL_DELAY_MS, 50), false),
-    f(S::Controls, "Keyboard",    "Repeat rate (ms)",       int!(controls.osk_nav_repeat_ms as u64, bounds::OSK_NAV_REPEAT_MS, 10), false),
+    f(S::Controls, "键盘",    "系统键盘",        flag!(controls.system_keyboard), false),
+    f(S::Controls, "键盘",    "摇杆阈值",        float!(controls.osk_nav_threshold as f32, bounds::OSK_NAV_THRESHOLD, 0.05, 2), false),
+    f(S::Controls, "键盘",    "连发延迟（毫秒）",      int!(controls.osk_nav_initial_delay_ms as u64, bounds::OSK_NAV_INITIAL_DELAY_MS, 50), false),
+    f(S::Controls, "键盘",    "连发间隔（毫秒）",       int!(controls.osk_nav_repeat_ms as u64, bounds::OSK_NAV_REPEAT_MS, 10), false),
 
-    f(S::Content,  "History",     "Record history",         flag!(history.enabled), false),
-    f(S::Content,  "History",     "Max entries",            int!(history.max_entries as usize, bounds::HISTORY_MAX, 5), false),
-    f(S::Content,  "Ad blocker",  "Enabled",                flag!(adblock.enabled), false).quick_as(Modes::Browser, "Ad blocker"),
-    f(S::Content,  "Ad blocker",  "Update every (days)",    int!(adblock.update_days as u64, bounds::ADBLOCK_UPDATE_DAYS, 1), false),
+    f(S::Content,  "历史记录",     "记录浏览历史",         flag!(history.enabled), false),
+    f(S::Content,  "历史记录",     "记录条数上限",            int!(history.max_entries as usize, bounds::HISTORY_MAX, 5), false),
+    f(S::Content,  "广告拦截",  "已启用",                flag!(adblock.enabled), false).quick_as(Modes::Browser, "广告拦截"),
+    f(S::Content,  "广告拦截",  "更新间隔（天）",    int!(adblock.update_days as u64, bounds::ADBLOCK_UPDATE_DAYS, 1), false),
 
-    f(S::Content, "Data saving", "Block images",         flag!(data_saving.block_images), false),
-    f(S::Content, "Data saving", "Block audio/video",    flag!(data_saving.block_media), false),
-    f(S::Content, "Data saving", "Block web fonts",      flag!(data_saving.block_fonts), false),
-    f(S::Content, "Data saving", "Max images/page",      int!(data_saving.max_images_per_page as usize, bounds::IMAGES_PER_PAGE, 8, Some("Unlimited")), false),
+    f(S::Content, "省流量", "屏蔽图片",         flag!(data_saving.block_images), false),
+    f(S::Content, "省流量", "屏蔽音视频",    flag!(data_saving.block_media), false),
+    f(S::Content, "省流量", "屏蔽网页字体",      flag!(data_saving.block_fonts), false),
+    f(S::Content, "省流量", "每页图片上限",      int!(data_saving.max_images_per_page as usize, bounds::IMAGES_PER_PAGE, 8, Some("不限")), false),
 
-    f(S::Content, "Audio",       "Audio output",         flag!(audio.enabled), true),
-    f(S::Content, "Audio",       "Max decode seconds",   int!(audio.max_decode_seconds as u32, bounds::DECODE_SECONDS, 30, Some("Unlimited")), true),
-    f(S::Content, "Video",       "Video playback",       flag!(video.enabled), true),
+    f(S::Content, "音频",       "音频输出",         flag!(audio.enabled), true),
+    f(S::Content, "音频",       "最长解码时长（秒）",   int!(audio.max_decode_seconds as u32, bounds::DECODE_SECONDS, 30, Some("不限")), true),
+    f(S::Content, "视频",       "视频播放",       flag!(video.enabled), true),
 
-    f(S::System,   "Performance", "Memory profile",          choice!(performance.memory_profile: MemoryProfile), true),
-    f(S::System,   "Performance", "Layout threads (0=auto)", int!(performance.layout_threads as u32, bounds::LAYOUT_THREADS, 1), true),
-    f(S::System,   "Performance", "Worker pool max (0=auto)", int!(performance.worker_pool_max as u32, bounds::WORKER_POOL_MAX, 1), true),
-    f(S::System,   "Performance", "CPU boost on load",       flag!(performance.cpu_boost_on_load), false),
-    f(S::System,   "Performance", "Swap tuning",             flag!(performance.swap_tuning), true),
-    f(S::System,   "Performance", "Memory guard",            flag!(performance.memory_guard), false),
-    f(S::System,   "Performance", "Memory guard floor (MB)", int!(performance.memory_guard_floor_mb as u32, bounds::MEMORY_GUARD_FLOOR_MB, 16, Some("Auto")), true),
-    f(S::System,   "Performance", "HTTP disk cache (MB)",    int!(performance.http_disk_cache_mb as u32, bounds::HTTP_DISK_CACHE_MB, 8, Some("Off")), true),
-    f(S::System,   "Performance", "Frame cap (fps)",        int!(performance.max_fps as u32, bounds::MAX_FPS, 5, Some("Uncapped")), false),
-    f(S::System,   "Display",     "Window width",           int!(display.width as u32, bounds::WIDTH, 16), true),
-    f(S::System,   "Display",     "Window height",          int!(display.height as u32, bounds::HEIGHT, 16), true),
-    f(S::System,   "Display",     "Use OpenGL ES",          flag!(display.use_gles), true),
-    f(S::System,   "Downloads",   "Save folder",            text!(downloads.dir), true),
-    f(S::System,   "Data",        "Clear browsing data",    Kind::Action { task: Task::ClearData }, false),
-    f(S::System,   "Updates",     "Update channel",         choice!(update.channel: Channel), false),
-    f(S::System,   "Updates",     "Auto-check on startup",  flag!(update.auto_check), false),
-    f(S::System,   "Diagnostics", "Memory overlay",         flag!(debug.memory_overlay), false),
-    f(S::System,   "Diagnostics", "Memory to log",          flag!(debug.memory_log), false),
+    f(S::System,   "性能", "内存配置",          choice!(performance.memory_profile: MemoryProfile), true),
+    f(S::System,   "性能", "布局线程数（0 为自动）", int!(performance.layout_threads as u32, bounds::LAYOUT_THREADS, 1), true),
+    f(S::System,   "性能", "工作线程上限（0 为自动）", int!(performance.worker_pool_max as u32, bounds::WORKER_POOL_MAX, 1), true),
+    f(S::System,   "性能", "加载时提高 CPU 性能",       flag!(performance.cpu_boost_on_load), false),
+    f(S::System,   "性能", "交换空间调优",             flag!(performance.swap_tuning), true),
+    f(S::System,   "性能", "内存保护",            flag!(performance.memory_guard), false),
+    f(S::System,   "性能", "内存保护下限（MB）", int!(performance.memory_guard_floor_mb as u32, bounds::MEMORY_GUARD_FLOOR_MB, 16, Some("自动")), true),
+    f(S::System,   "性能", "HTTP 磁盘缓存（MB）",    int!(performance.http_disk_cache_mb as u32, bounds::HTTP_DISK_CACHE_MB, 8, Some("关闭")), true),
+    f(S::System,   "性能", "帧率上限（fps）",        int!(performance.max_fps as u32, bounds::MAX_FPS, 5, Some("不限")), false),
+    f(S::System,   "显示",     "窗口宽度",           int!(display.width as u32, bounds::WIDTH, 16), true),
+    f(S::System,   "显示",     "窗口高度",          int!(display.height as u32, bounds::HEIGHT, 16), true),
+    f(S::System,   "显示",     "使用 OpenGL ES",          flag!(display.use_gles), true),
+    f(S::System,   "下载",   "保存目录",            text!(downloads.dir), true),
+    f(S::System,   "数据",        "清除浏览数据",    Kind::Action { task: Task::ClearData }, false),
+    f(S::System,   "更新",     "更新渠道",         choice!(update.channel: Channel), false),
+    f(S::System,   "更新",     "启动时自动检查更新",  flag!(update.auto_check), false),
+    f(S::System,   "诊断", "显示内存监视",         flag!(debug.memory_overlay), false),
+    f(S::System,   "诊断", "记录内存用量",          flag!(debug.memory_log), false),
     #[cfg(target_os = "android")]
-    f(S::System,   "Diagnostics", "Logs",                   Kind::Action { task: Task::ShareLogs }, false),
+    f(S::System,   "诊断", "日志",                   Kind::Action { task: Task::ShareLogs }, false),
     // Last row: it rewrites every other one.
-    f(S::System,   "Reset",       "Restore all defaults",   Kind::Action { task: Task::RestoreDefaults }, true),
+    f(S::System,   "重置",       "恢复所有默认设置",   Kind::Action { task: Task::RestoreDefaults }, true),
 ];
 
 #[cfg(test)]

@@ -78,6 +78,23 @@ pub fn apply(ctx: &egui::Context) {
         egui::FontFamily::Name(FILL_FAMILY.into()),
         vec!["Ubuntu-Light".to_owned(), FILL_FAMILY.to_owned()],
     );
+    #[cfg(target_os = "windows")]
+    if let Some(font) = std::env::var_os("WINDIR")
+        .map(std::path::PathBuf::from)
+        .and_then(|dir| {
+            ["msyh.ttc", "simsun.ttc"]
+                .iter()
+                .find_map(|file| std::fs::read(dir.join("Fonts").join(file)).ok())
+        })
+    {
+        let name = "windows-cjk".to_owned();
+        fonts
+            .font_data
+            .insert(name.clone(), egui::FontData::from_owned(font).into());
+        for family in [egui::FontFamily::Proportional, egui::FontFamily::Monospace] {
+            fonts.families.entry(family).or_default().push(name.clone());
+        }
+    }
     ctx.set_fonts(fonts);
 
     let mut visuals = egui::Visuals::dark();

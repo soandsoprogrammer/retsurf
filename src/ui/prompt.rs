@@ -82,9 +82,9 @@ fn add_select(
     let row_w = (screen.width() - 96.0).min(448.0);
     ui.label(
         egui::RichText::new(if multiple {
-            format!("Select options — {} toggles, OK applies", face.a)
+            format!("选择选项，按 {} 切换，选择「确定」应用", face.a)
         } else {
-            "Select an option".to_string()
+            "请选择一项".to_string()
         })
         .color(dim),
     );
@@ -127,7 +127,7 @@ fn add_select(
             [90.0, ROW_H],
             egui::Button::selectable(
                 ok_slot == selected_slot,
-                egui::RichText::new("OK").color(egui::Color32::WHITE),
+                egui::RichText::new("确定").color(egui::Color32::WHITE),
             ),
         );
         if ok.clicked() {
@@ -203,7 +203,7 @@ fn add_dialog(
     let dim = DIM;
     // Web content can't draw browser chrome — the header marks the message as
     // coming from the page so it can't impersonate the UI.
-    ui.label(egui::RichText::new("The page says:").color(dim));
+    ui.label(egui::RichText::new("网页消息").color(dim));
     ui.add_space(4.0);
     egui::ScrollArea::vertical()
         .max_height(screen.height() * 0.5)
@@ -236,7 +236,7 @@ fn add_dialog(
             [90.0, ROW_H],
             egui::Button::selectable(
                 selected == 0,
-                egui::RichText::new("OK").color(egui::Color32::WHITE),
+                egui::RichText::new("确定").color(egui::Color32::WHITE),
             ),
         );
         if ok.clicked() {
@@ -247,7 +247,7 @@ fn add_dialog(
                 [90.0, ROW_H],
                 egui::Button::selectable(
                     selected == 1,
-                    egui::RichText::new("Cancel").color(egui::Color32::WHITE),
+                    egui::RichText::new("取消").color(egui::Color32::WHITE),
                 ),
             );
             if cancel.clicked() {

@@ -89,8 +89,8 @@ fn items(edit: &MapEdit) -> Vec<ListItem> {
 /// screen says things.
 fn heading_for(slot: &Slot) -> &'static str {
     match slot {
-        Slot::Stick(_) | Slot::Direction(..) => "STICKS",
-        Slot::Button(_) => "GAMEPAD",
-        Slot::Key(_) => "KEYBOARD",
+        Slot::Stick(_) | Slot::Direction(..) => "摇杆",
+        Slot::Button(_) => "手柄",
+        Slot::Key(_) => "键盘",
     }
 }

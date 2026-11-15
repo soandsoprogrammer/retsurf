@@ -333,7 +333,7 @@ fn add_search(ui: &mut egui::Ui, home: &mut Home, width: f32, osk_caret: Option<
         let field_font = font(20.0);
         let edit = egui::TextEdit::singleline(home.input_mut())
             .id(edit_id)
-            .hint_text(egui::RichText::new("Search or enter address").font(field_font.clone()))
+            .hint_text(egui::RichText::new("搜索或输入网址").font(field_font.clone()))
             .frame(egui::Frame::NONE)
             .background_color(egui::Color32::TRANSPARENT)
             .desired_width(f32::INFINITY)
@@ -484,10 +484,10 @@ pub(super) fn paint_tile(
     };
     let glyph = paint_glyph_square(painter, rect, active, Some(fill));
 
-    // The settings sentinel isn't a real address: show a gear glyph and "Settings"
+    // The settings sentinel isn't a real address: show a gear glyph and "设置"
     // rather than the garbage `brand_label` would derive from `retsurf:settings`.
     let (glyph_text, name) = if url == SETTINGS_PIN {
-        (bold::GEAR.to_string(), "Settings".to_string())
+        (bold::GEAR.to_string(), "设置".to_string())
     } else {
         let label = brand_label(url);
         let initial = label

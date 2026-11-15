@@ -77,7 +77,7 @@ const ACCESS_BROWSER: &[Slot] = &[
     Slot::Row(Entry::Run(Action::Bookmark)),
     Slot::QuickRows,
     Slot::Row(Entry::Run(Action::Reader)),
-    Slot::Quick("Page theme"),
+    Slot::Quick("网页主题"),
 ];
 
 /// Quick Access over a game: reload first, what changes it, then the way out.
@@ -108,18 +108,18 @@ impl Entry {
     /// something before it acts.
     pub fn label(self) -> &'static str {
         match self {
-            Entry::Enter => "Enter game mode",
+            Entry::Enter => "进入游戏模式",
             Entry::Quick(i) => Settings::fields()[i].quick_label(),
-            Entry::Run(Action::Reader) => "Reader view",
+            Entry::Run(Action::Reader) => "阅读模式",
             Entry::Run(action) => action.label(),
             Entry::List(section) => section.label(),
-            Entry::InputMap => "Input map",
+            Entry::InputMap => "按键映射",
             // Not "Keyboard": a map has a `[keyboard]` table of physical keys.
-            Entry::Osk => "On-screen keyboard",
-            Entry::Settings => "Settings",
-            Entry::Reload => "Reload",
-            Entry::Exit => "Exit game mode",
-            Entry::Quit => "Quit retsurf",
+            Entry::Osk => "屏幕键盘",
+            Entry::Settings => "设置",
+            Entry::Reload => "刷新",
+            Entry::Exit => "退出游戏模式",
+            Entry::Quit => "退出 retsurf",
         }
     }
 
@@ -127,8 +127,8 @@ impl Entry {
     /// (see [`QuickAccess::confirm`]); `None` for a row that acts at once.
     pub fn confirm_hint(self) -> Option<&'static str> {
         match self {
-            Entry::Quit => Some("press again to quit"),
-            Entry::Reload => Some("press again to reload"),
+            Entry::Quit => Some("再按一次退出"),
+            Entry::Reload => Some("再按一次刷新"),
             _ => None,
         }
     }
@@ -321,7 +321,7 @@ mod tests {
     fn the_highlight_starts_on_the_first_row_and_wraps_at_the_ends() {
         let mut panel = open(TabMode::Game);
         assert_eq!(panel.row(), Entry::Reload);
-        assert_eq!(panel.label(1), "Scaling");
+        assert_eq!(panel.label(1), "画面缩放");
         panel.move_sel(-1);
         assert_eq!(panel.row(), Entry::Exit);
         panel.move_sel(1);
@@ -332,16 +332,16 @@ mod tests {
         assert_eq!(
             labels,
             [
-                "Enter game mode",
+                "进入游戏模式",
                 "Bookmark",
-                "User agent",
-                "Ad blocker",
-                "Reader view",
-                "Page theme"
+                "用户代理",
+                "广告拦截",
+                "阅读模式",
+                "网页主题"
             ]
         );
         panel.move_sel(-1);
-        assert_eq!(panel.label(panel.selected()), "Page theme");
+        assert_eq!(panel.label(panel.selected()), "网页主题");
     }
 
     #[test]
@@ -352,8 +352,8 @@ mod tests {
         assert!(browser.contains(&Entry::Enter) && !browser.contains(&Entry::Exit));
         assert!(!browser.contains(&Entry::Osk));
         let has = |rows: &[Entry], label| rows.iter().any(|row| row.label() == label);
-        assert!(has(&game, "Scaling") && !has(&browser, "Scaling"));
-        assert!(has(&browser, "Page theme") && !has(&game, "Page theme"));
+        assert!(has(&game, "画面缩放") && !has(&browser, "画面缩放"));
+        assert!(has(&browser, "网页主题") && !has(&game, "网页主题"));
         assert!(!game
             .iter()
             .any(|row| matches!(row, Entry::Run(_) | Entry::List(_))));
@@ -387,12 +387,9 @@ mod tests {
                 .expect("the browser rows carry the reader view");
             (panel.label(at), panel.flag(at))
         };
-        assert_eq!(
-            reader_row(&open(TabMode::Page)),
-            ("Reader view", Some(false))
-        );
+        assert_eq!(reader_row(&open(TabMode::Page)), ("阅读模式", Some(false)));
         let panel = open(TabMode::Reader);
-        assert_eq!(reader_row(&panel), ("Reader view", Some(true)));
+        assert_eq!(reader_row(&panel), ("阅读模式", Some(true)));
         assert_eq!(panel.rows(), open(TabMode::Page).rows());
     }
 
@@ -403,7 +400,7 @@ mod tests {
         panel.move_sel(-1);
         assert_eq!(panel.row(), Entry::Quit);
         assert!(!panel.confirm(Entry::Quit));
-        assert_eq!(panel.value(panel.selected()), "press again to quit");
+        assert_eq!(panel.value(panel.selected()), "再按一次退出");
         panel.move_sel(-1);
         panel.move_sel(1);
         assert!(!panel.confirm(Entry::Quit));
@@ -419,10 +416,10 @@ mod tests {
             panel.flag(at.expect("a browser quick row"))
         };
         assert_eq!(
-            flag_of("Ad blocker"),
+            flag_of("广告拦截"),
             Some(AppConfig::default().adblock.enabled)
         );
-        assert_eq!(flag_of("User agent"), None);
+        assert_eq!(flag_of("用户代理"), None);
         assert_eq!(flag_of("Bookmark"), None);
     }
 
@@ -432,7 +429,7 @@ mod tests {
         let mut panel = open(TabMode::Game);
         assert_eq!(panel.row(), Entry::Reload);
         assert!(!panel.confirm(Entry::Reload));
-        assert_eq!(panel.value(panel.selected()), "press again to reload");
+        assert_eq!(panel.value(panel.selected()), "再按一次刷新");
         assert!(!panel.confirm(Entry::Quit));
         assert!(!panel.confirm(Entry::Reload));
         assert!(panel.confirm(Entry::Reload));
@@ -458,7 +455,7 @@ mod tests {
         let at = panel
             .rows()
             .iter()
-            .position(|row| row.label() == "Scaling")
+            .position(|row| row.label() == "画面缩放")
             .expect("scaling is a quick row in the mode");
         assert_eq!(panel.value(at), "None");
     }

@@ -45,7 +45,7 @@ pub(super) fn add_dial_edit(
                     ui.vertical_centered(|ui| {
                         ui.add_space(8.0);
                         ui.label(
-                            egui::RichText::new("Edit speed dial")
+                            egui::RichText::new("编辑快捷网站")
                                 .color(INK)
                                 .size(18.0)
                                 .strong(),
@@ -172,7 +172,7 @@ fn add_field(ui: &mut egui::Ui, edit: &mut DialEdit, width: f32, osk_caret: Opti
         let field_font = egui::FontId::proportional(18.0);
         let edit_widget = egui::TextEdit::singleline(edit.input_mut())
             .id(edit_id)
-            .hint_text(egui::RichText::new("Type or paste a URL").font(field_font.clone()))
+            .hint_text(egui::RichText::new("输入或粘贴网址").font(field_font.clone()))
             .frame(egui::Frame::NONE)
             .background_color(egui::Color32::TRANSPARENT)
             .desired_width(f32::INFINITY)

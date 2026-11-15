@@ -65,13 +65,13 @@ impl SettingsSection {
 
     pub fn label(self) -> &'static str {
         match self {
-            SettingsSection::Browser => "Browser",
-            SettingsSection::Interface => "Interface",
-            SettingsSection::Controls => "Controls",
-            SettingsSection::Gaming => "Gaming",
-            SettingsSection::Content => "Content",
-            SettingsSection::System => "System",
-            SettingsSection::About => "About",
+            SettingsSection::Browser => "浏览器",
+            SettingsSection::Interface => "界面",
+            SettingsSection::Controls => "操控",
+            SettingsSection::Gaming => "游戏",
+            SettingsSection::Content => "内容",
+            SettingsSection::System => "系统",
+            SettingsSection::About => "关于",
         }
     }
 
@@ -476,7 +476,7 @@ impl Settings {
             return String::new();
         };
         match &fields::FIELDS[i].kind {
-            Kind::Action { .. } if draft.armed == Some(i) => "press again to confirm".to_string(),
+            Kind::Action { .. } if draft.armed == Some(i) => "再按一次确认".to_string(),
             kind => value_of(kind, &draft.config),
         }
     }
@@ -495,7 +495,7 @@ mod tests {
         assert_eq!(cfg.update.channel, Channel::Release);
         let row = fields::FIELDS
             .iter()
-            .position(|f| f.label == "Update channel")
+            .position(|f| f.label == "更新渠道")
             .expect("FIELDS lists the update channel row");
 
         let mut settings = Settings::new();
@@ -535,7 +535,7 @@ mod tests {
         settings.set_selected(clear_row());
 
         assert_eq!(settings.confirm_action(), None);
-        assert_eq!(settings.value_str(clear_row()), "press again to confirm");
+        assert_eq!(settings.value_str(clear_row()), "再按一次确认");
         assert_eq!(settings.confirm_action(), Some(Task::ClearData));
         // Run, so the row is disarmed again.
         assert_eq!(settings.confirm_action(), None);

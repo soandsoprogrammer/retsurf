@@ -43,12 +43,12 @@ impl MapAction {
     /// spell their rows out rather than trailing off into an ellipsis.
     pub fn label(self) -> &'static str {
         match self {
-            MapAction::Use => "Use this map",
-            MapAction::Edit => "Edit",
-            MapAction::Rename => "Rename",
-            MapAction::Duplicate => "Duplicate",
-            MapAction::Delete => "Delete",
-            MapAction::Reset => "Reset to default",
+            MapAction::Use => "使用此映射",
+            MapAction::Edit => "编辑",
+            MapAction::Rename => "重命名",
+            MapAction::Duplicate => "复制",
+            MapAction::Delete => "删除",
+            MapAction::Reset => "恢复默认设置",
         }
     }
 }
@@ -341,7 +341,7 @@ mod tests {
             },
             MapRow {
                 id: "pad".to_string(),
-                name: "Gamepad".to_string(),
+                name: "手柄".to_string(),
                 in_use: false,
                 remove: Some(MapAction::Reset),
                 fixed: false,

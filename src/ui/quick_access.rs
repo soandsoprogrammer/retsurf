@@ -64,8 +64,8 @@ pub(in crate::ui) fn add_quick_access(
     let width = outer - margin.x;
     // Each on the side of the button that opens it.
     let (left, title) = match panel.strip() {
-        Strip::QuickAccess => (screen.right() - outer, "QUICK ACCESS"),
-        Strip::QuickMenu => (screen.left(), "QUICK MENU"),
+        Strip::QuickAccess => (screen.right() - outer, "快速访问"),
+        Strip::QuickMenu => (screen.left(), "快捷菜单"),
     };
     add_backdrop(ctx, screen, commands);
     egui::Area::new(egui::Id::new("quick_access"))
@@ -197,11 +197,11 @@ fn glyph(entry: Entry) -> &'static str {
         Entry::List(Section::History) => bold::CLOCK_COUNTER_CLOCKWISE,
         Entry::List(Section::Downloads) => bold::DOWNLOAD_SIMPLE,
         Entry::Quick(field) => match Settings::fields()[field].quick_label() {
-            "Scaling" => bold::FRAME_CORNERS,
-            "Shader" => bold::TELEVISION_SIMPLE,
-            "Page theme" => bold::CIRCLE_HALF,
-            "Ad blocker" => bold::SHIELD_CHECK,
-            "User agent" => bold::DEVICES,
+            "画面缩放" => bold::FRAME_CORNERS,
+            "着色器" => bold::TELEVISION_SIMPLE,
+            "网页主题" => bold::CIRCLE_HALF,
+            "广告拦截" => bold::SHIELD_CHECK,
+            "用户代理" => bold::DEVICES,
             _ => NO_ICON,
         },
     }

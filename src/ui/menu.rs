@@ -238,8 +238,8 @@ pub(super) fn add_menu(
             Section::Downloads => None,
         };
         let x_action = match menu.section() {
-            Section::Tabs => "close",
-            Section::Bookmarks | Section::History | Section::Downloads => "remove",
+            Section::Tabs => "关闭",
+            Section::Bookmarks | Section::History | Section::Downloads => "移除",
         };
         let (left, right) = (bold::CARET_LEFT, bold::CARET_RIGHT);
         let (up, down) = (bold::CARET_UP, bold::CARET_DOWN);
@@ -267,7 +267,7 @@ pub(super) fn add_menu(
     }
 }
 
-/// Tabs section: a leading "+ New tab" row (selection index 0) over the open tabs
+/// Tabs section: a leading "+ 新建标签页" row (selection index 0) over the open tabs
 /// (indices `1..=tabs.len()`), each with a bookmark toggle and a close button.
 fn add_tabs_section(
     ui: &mut egui::Ui,
@@ -283,13 +283,13 @@ fn add_tabs_section(
     let row_w = screen.width() - SIDES - 2.0 * DEL_W - 12.0;
     section_scroll(ui, screen).show(ui, |ui| {
         ui.spacing_mut().item_spacing.y = ROW_GAP;
-        // "+ New tab" at the top (selection index 0): a plain full-width row with
+        // "+ 新建标签页" at the top (selection index 0): a plain full-width row with
         // no fill of its own, so only the cursor highlight marks it.
         let new_tab = row_button(
             ui,
             screen.width() - SIDES,
             selected == 0,
-            egui::RichText::new("+ New tab").color(egui::Color32::WHITE),
+            egui::RichText::new("+ 新建标签页").color(egui::Color32::WHITE),
         );
         if selected == 0 {
             center_selected(&new_tab);
@@ -299,7 +299,7 @@ fn add_tabs_section(
         }
 
         for (i, tab) in tabs.iter().enumerate() {
-            let sel = selected == i + 1; // index 0 is the "+ New tab" button
+            let sel = selected == i + 1; // index 0 is the "+ 新建标签页" button
             ui.horizontal(|ui| {
                 // The active tab is accent and bold, the cursor's row is the
                 // selectable highlight: the two must read apart on one row.
@@ -363,11 +363,7 @@ fn add_bookmarks_section(
     let bookmarks = menu.bookmarks();
     if bookmarks.urls().is_empty() {
         ui.label(
-            egui::RichText::new(format!(
-                "No bookmarks yet — press {} to add this page.",
-                bold::STAR
-            ))
-            .color(dim),
+            egui::RichText::new(format!("暂无书签，按 {} 收藏当前网页。", bold::STAR)).color(dim),
         );
         return;
     }
@@ -410,7 +406,7 @@ fn add_downloads_section(
     let dim = DIM;
     let downloads = &menu.downloads;
     if downloads.items().is_empty() {
-        ui.label(egui::RichText::new("No downloads yet.").color(dim));
+        ui.label(egui::RichText::new("暂无下载").color(dim));
         return;
     }
 
@@ -421,14 +417,14 @@ fn add_downloads_section(
         clear_row(
             ui,
             screen.width() - SIDES,
-            "Clear finished",
+            "清除已完成的下载",
             downloads.selected() == 0,
             menu.clear_armed(),
             downloads.has_finished(),
             commands,
         );
         for (i, item) in downloads.items().iter().enumerate() {
-            let selected = downloads.selected() == i + 1; // index 0 is "Clear finished"
+            let selected = downloads.selected() == i + 1; // index 0 is "清除已完成的下载"
             ui.horizontal(|ui| {
                 let resp = row_button(
                     ui,
@@ -457,7 +453,7 @@ fn add_downloads_section(
 }
 
 /// History section: visited URLs (most-recent first) with their visit date, over
-/// a leading "Clear all" row.
+/// a leading "清除全部" row.
 fn add_history_section(
     ui: &mut egui::Ui,
     screen: egui::Rect,
@@ -468,7 +464,7 @@ fn add_history_section(
     let dim = DIM;
     let hist = menu.history();
     if hist.entries().is_empty() {
-        ui.label(egui::RichText::new("No history yet.").color(dim));
+        ui.label(egui::RichText::new("暂无历史记录").color(dim));
         return;
     }
 
@@ -478,19 +474,19 @@ fn add_history_section(
     let row_w = screen.width() - SIDES - 2.0 * DEL_W - date_w - 18.0;
     section_scroll(ui, screen).show(ui, |ui| {
         ui.spacing_mut().item_spacing.y = ROW_GAP;
-        // Top row (cursor index 0, mirroring Tabs' "+ New tab"): drops every
+        // Top row (cursor index 0, mirroring Tabs' "+ 新建标签页"): drops every
         // entry. Dim, to set a destructive action apart from the URL rows.
         clear_row(
             ui,
             screen.width() - SIDES,
-            "Clear all",
+            "清除全部",
             hist.selected() == 0,
             menu.clear_armed(),
             true,
             commands,
         );
         for (i, entry) in hist.entries().iter().enumerate() {
-            let selected = hist.selected() == i + 1; // index 0 is "Clear all"
+            let selected = hist.selected() == i + 1; // index 0 is "清除全部"
             ui.horizontal(|ui| {
                 let icon = site_icon(icons, &entry.url);
                 let atoms = url_atoms(ui, &entry.url, false, icon, row_w);

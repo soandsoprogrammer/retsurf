@@ -32,10 +32,10 @@ impl Section {
 
     pub fn label(self) -> &'static str {
         match self {
-            Section::Tabs => "Tabs",
-            Section::Bookmarks => "Bookmarks",
-            Section::History => "History",
-            Section::Downloads => "Downloads",
+            Section::Tabs => "标签页",
+            Section::Bookmarks => "书签",
+            Section::History => "历史记录",
+            Section::Downloads => "下载",
         }
     }
 
@@ -56,7 +56,7 @@ pub struct Menu {
     pub downloads: Downloads,
     /// Highlighted row in the Tabs section. The tab list lives in the browser, so
     /// this index is clamped against `tab_count`, refreshed each frame the menu is
-    /// shown. The row at index `tab_count` is the "+ New tab" entry.
+    /// shown. The row at index `tab_count` is the "+ 新建标签页" entry.
     tab_selected: usize,
     tab_count: usize,
     /// The clear row was activated once and awaits confirmation. Clearing history
@@ -84,7 +84,7 @@ impl Menu {
     }
 
     /// Show the menu, resetting every section's highlight to the top. In Tabs,
-    /// index 0 is the "+ New tab" button, so the cursor starts on the first tab
+    /// index 0 is the "+ 新建标签页" button, so the cursor starts on the first tab
     /// (index 1) — A then switches tabs rather than spawning a new one.
     pub fn open(&mut self) {
         self.visible = true;
@@ -157,14 +157,14 @@ impl Menu {
             Section::Bookmarks => self.bookmarks.move_sel(dy),
             Section::History => self.history.move_sel(dy),
             Section::Downloads => self.downloads.move_sel(dy),
-            // Index 0 is the "+ New tab" button; the tabs follow at `1..=tab_count`.
+            // Index 0 is the "+ 新建标签页" button; the tabs follow at `1..=tab_count`.
             Section::Tabs => {
                 self.tab_selected = crate::list::step(self.tab_selected, dy, self.tab_count + 1);
             }
         }
     }
 
-    /// Highlighted row in the Tabs section (0 == the "+ New tab" button, then
+    /// Highlighted row in the Tabs section (0 == the "+ 新建标签页" button, then
     /// the tabs at `1..=tab_count`).
     pub fn tab_selected(&self) -> usize {
         self.tab_selected
@@ -172,7 +172,7 @@ impl Menu {
 
     /// Whether the active section's leading clear row is highlighted — History's
     /// "Clear all" or Downloads' "Clear finished" (A then clears, mirroring how A
-    /// on the Tabs "+ New tab" row opens a tab).
+    /// on the Tabs "+ 新建标签页" row opens a tab).
     pub fn clear_selected(&self) -> bool {
         match self.section {
             Section::History => self.history.clear_selected(),

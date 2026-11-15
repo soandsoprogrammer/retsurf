@@ -328,6 +328,9 @@ fn build_window(
     if gl {
         builder.opengl();
     }
+    #[cfg(target_os = "windows")]
+    builder.borderless();
+
     builder
         .resizable()
         .build()

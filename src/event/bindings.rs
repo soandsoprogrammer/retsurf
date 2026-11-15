@@ -68,74 +68,74 @@ macro_rules! action_table {
 }
 
 action_table! {
-    "General" => {
+    "常规" => {
         /// Confirm: click / select / activate. Needs both press and release edges.
-        Confirm => "confirm", "Confirm",
+        Confirm => "confirm", "确认",
         /// Cancel: close the open overlay, otherwise one step back.
-        Cancel => "cancel", "Cancel",
+        Cancel => "cancel", "取消",
         /// Open / close Quick Menu; also closes the lists menu it opened.
-        Menu => "menu", "Quick Menu",
+        Menu => "menu", "快捷菜单",
         /// Open the settings overlay (see [`crate::overlay::settings`]).
-        Settings => "settings", "Settings",
+        Settings => "settings", "设置",
         /// Toggle the on-screen keyboard / backspace while it's open.
-        Osk => "osk", "On-screen keyboard",
+        Osk => "osk", "屏幕键盘",
         /// Open / close Quick Access. Mirrored inside the mode, where the tables
         /// are bypassed, so the way in and the way out are one gesture.
-        QuickAccess => "quick_access", "Quick Access",
+        QuickAccess => "quick_access", "快速访问",
         /// Quit immediately. Unbound by default; [`default_store`] carries the
         /// stock exit.
-        Quit => "quit", "Quit",
+        Quit => "quit", "退出",
     }
-    "Navigation" => {
+    "导航" => {
         /// Previous: menu section to the left while the menu is open, otherwise
         /// history back.
-        Prev => "prev", "Back / prev",
+        Prev => "prev", "后退／上一项",
         /// Next: menu section to the right while the menu is open, otherwise
         /// history forward.
-        Next => "next", "Forward / next",
+        Next => "next", "前进／下一项",
         /// Navigate the active tab to the configured home page.
-        Home => "home", "Home",
+        Home => "home", "主页",
         /// Type a new address (see [`AppCommand::FocusAddressBar`]).
-        Address => "address", "Address bar",
+        Address => "address", "地址栏",
         /// Toggle link-hint navigation.
-        Hints => "hints", "Link hints",
+        Hints => "hints", "链接提示",
         /// Toggle the D-pad / left stick between cursor and page scroll, for devices
         /// with no right stick. Latched inside the gamepad, never a command.
-        Scroll => "scroll", "Scroll toggle",
+        Scroll => "scroll", "切换滚动模式",
         /// Overlay navigation by one step: menu rows /
         /// sections, the OSK grid, or hint hops — whatever overlay is open. Falls
         /// through to the page when none is.
-        NavUp => "nav_up", "Nav up",
+        NavUp => "nav_up", "向上导航",
         /// Overlay navigation one step down; see [`Action::NavUp`].
-        NavDown => "nav_down", "Nav down",
+        NavDown => "nav_down", "向下导航",
         /// Overlay navigation one step left; see [`Action::NavUp`].
-        NavLeft => "nav_left", "Nav left",
+        NavLeft => "nav_left", "向左导航",
         /// Overlay navigation one step right; see [`Action::NavUp`].
-        NavRight => "nav_right", "Nav right",
+        NavRight => "nav_right", "向右导航",
     }
-    "Page" => {
+    "网页" => {
         /// Reload the page (space while the on-screen keyboard is open).
-        Reload => "reload", "Reload",
+        Reload => "reload", "刷新",
         /// Toggle reader mode on the current page.
-        Reader => "reader", "Reader view",
+        Reader => "reader", "阅读模式",
         /// Bookmark the current page.
-        Bookmark => "bookmark", "Bookmark",
+        Bookmark => "bookmark", "添加书签",
         /// Step the page zoom up the ladder.
-        ZoomIn => "zoom_in", "Zoom in",
+        ZoomIn => "zoom_in", "放大",
         /// Step the page zoom down the ladder.
-        ZoomOut => "zoom_out", "Zoom out",
+        ZoomOut => "zoom_out", "缩小",
         /// Return the page zoom to the config default.
-        ZoomReset => "zoom_reset", "Zoom reset",
+        ZoomReset => "zoom_reset", "重置缩放",
     }
-    "Tabs" => {
+    "标签页" => {
         /// Switch to the next open tab (wraps around).
-        TabNext => "tab_next", "Next tab",
+        TabNext => "tab_next", "下一个标签页",
         /// Switch to the previous open tab (wraps around).
-        TabPrev => "tab_prev", "Previous tab",
+        TabPrev => "tab_prev", "上一个标签页",
         /// Open a new tab at the home page.
-        NewTab => "new_tab", "New tab",
+        NewTab => "new_tab", "新建标签页",
         /// Close the focused tab; closing the last one leaves a fresh one open.
-        CloseTab => "close_tab", "Close tab",
+        CloseTab => "close_tab", "关闭标签页",
     }
 }
 
@@ -263,8 +263,8 @@ impl Action {
 /// What the pad must keep, whatever else is rebound: a handheld has no keyboard
 /// or mouse, so losing these strands the user on the screen that took them away.
 pub const REQUIRED: &[Requirement<Action>] = &[
-    ("Confirm", &[Action::Confirm]),
-    ("Cancel", &[Action::Cancel]),
+    ("确认", &[Action::Confirm]),
+    ("取消", &[Action::Cancel]),
     // Quick Access carries a Settings row, so either way reaches it.
     ("Opening settings", &[Action::Settings, Action::QuickAccess]),
 ];

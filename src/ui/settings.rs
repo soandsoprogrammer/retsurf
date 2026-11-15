@@ -16,7 +16,7 @@ use inputbind::editor::{Bound, Row};
 use inputbind::Action as _;
 
 /// The reset rows, in the order the Controls list counts them.
-const RESETS: [&str; RESET_ROWS] = ["Restore gamepad defaults", "Restore keyboard defaults"];
+const RESETS: [&str; RESET_ROWS] = ["恢复手柄默认设置", "恢复键盘默认设置"];
 
 /// The square step buttons trailing a numeric row.
 const STEP_W: f32 = 26.0;
@@ -122,10 +122,10 @@ fn notes_preview(body: &str) -> String {
 /// one line so the row stays one stable gamepad-focus target across states.
 fn update_row_text(state: &UpdateState) -> (String, String) {
     match state {
-        UpdateState::Idle => ("Check for updates".to_string(), String::new()),
-        UpdateState::Checking => ("Checking for updates".to_string(), "...".to_string()),
+        UpdateState::Idle => ("检查更新".to_string(), String::new()),
+        UpdateState::Checking => ("正在检查更新".to_string(), "...".to_string()),
         UpdateState::UpToDate { current } => {
-            (format!("Up to date ({current})"), "Check again".to_string())
+            (format!("已是最新版（{current}）"), "再次检查".to_string())
         }
         UpdateState::Available {
             version,
@@ -136,17 +136,17 @@ fn update_row_text(state: &UpdateState) -> (String, String) {
             version,
             offer: Offer::Open,
             ..
-        } => (format!("Download {version}"), "Open page".to_string()),
+        } => (format!("下载 {version}"), "打开页面".to_string()),
         UpdateState::Downloading { received, total } => {
             let value = crate::data::downloads::format_progress(*received, *total);
-            ("Downloading update".to_string(), value)
+            ("正在下载更新".to_string(), value)
         }
-        UpdateState::Installing => ("Installing update".to_string(), "...".to_string()),
+        UpdateState::Installing => ("正在安装更新".to_string(), "...".to_string()),
         UpdateState::Installed { version } => (
-            format!("Update ready ({version})"),
-            "Quit to apply".to_string(),
+            format!("更新已就绪（{version}）"),
+            "退出以应用更新".to_string(),
         ),
-        UpdateState::Error(e) => (format!("Update failed: {e}"), "Retry".to_string()),
+        UpdateState::Error(e) => (format!("更新失败：{e}"), "重试".to_string()),
     }
 }
 
@@ -162,7 +162,7 @@ fn add_update(
 ) -> usize {
     ui.add_space(10.0);
     ui.label(
-        egui::RichText::new("Updates")
+        egui::RichText::new("更新")
             .color(ACCENT)
             .strong()
             .size(13.0),
@@ -198,8 +198,8 @@ fn add_update(
             ui,
             full_w,
             selected,
-            "View release notes on GitHub".to_string(),
-            "Open page".to_string(),
+            "在 GitHub 查看更新说明".to_string(),
+            "打开页面".to_string(),
         );
         if selected {
             center_selected(&resp);
@@ -248,7 +248,7 @@ fn add_about(
 
         ui.add_space(10.0);
         ui.label(
-            egui::RichText::new("Components")
+            egui::RichText::new("组件")
                 .color(ACCENT)
                 .strong()
                 .size(13.0),
@@ -259,7 +259,7 @@ fn add_about(
 
         ui.add_space(10.0);
         ui.label(
-            egui::RichText::new("Credits")
+            egui::RichText::new("致谢")
                 .color(ACCENT)
                 .strong()
                 .size(13.0),
@@ -270,7 +270,7 @@ fn add_about(
 
         ui.add_space(10.0);
         ui.label(
-            egui::RichText::new("Links")
+            egui::RichText::new("链接")
                 .color(ACCENT)
                 .strong()
                 .size(13.0),
@@ -380,7 +380,7 @@ fn add_controls(
                 }
                 Row::Add(action) => {
                     let value = if capturing == Some(*action) {
-                        "press a button or key..."
+                        "请按下手柄按键或键盘按键…"
                     } else {
                         ""
                     };
@@ -448,7 +448,7 @@ pub(super) fn add_settings(
         let (ok, back) = (face.a, face.b);
         let (section, mv) = ("L1/R1 section", format!("{up}{down} move"));
         let hint = if settings.capturing() {
-            theme::hint_line(&["Press a button or key to bind", "Esc cancel"])
+            theme::hint_line(&["按下手柄按键或键盘按键进行绑定", "Esc 取消"])
         } else if settings.is_info_section() {
             theme::hint_line(&[
                 section,
