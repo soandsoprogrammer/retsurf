@@ -70,6 +70,18 @@ pub(super) fn build_preferences(
         prefs.user_agent = ua;
     }
 
+    #[cfg(target_os = "windows")]
+    if let Some(windows) = std::env::var_os("WINDIR") {
+        let fonts = std::path::PathBuf::from(windows).join("Fonts");
+        if fonts.join("msyh.ttc").is_file() {
+            prefs.fonts_default = "Microsoft YaHei".into();
+            prefs.fonts_sans_serif = "Microsoft YaHei".into();
+        }
+        if fonts.join("simsun.ttc").is_file() {
+            prefs.fonts_serif = "SimSun".into();
+        }
+    }
+
     apply_pref_overrides(&mut prefs);
 
     log::info!(

@@ -32,7 +32,12 @@ impl App {
         match command {
             AppCommand::Shutdown => self.shutdown(),
             #[cfg(target_os = "windows")]
-            AppCommand::ToggleMaximized => self.window.toggle_maximized(),
+            AppCommand::ToggleMaximized => {
+                if let Err(err) = self.window.toggle_maximized() {
+                    log::warn!("could not change window bounds: {err}");
+                    self.ui.toast("无法调整窗口大小");
+                }
+            }
             // On a window resize, size the browser to the new central area straight
             // away from the actual window (egui's reactive sizing can lag a frame).
             AppCommand::Resize => {

@@ -87,6 +87,8 @@ pub struct AppWindow {
     backend: Box<dyn WindowBackend>,
     /// The size the window opened at — what [`Self::remembered_size`] measures against.
     initial_size: (u32, u32),
+    #[cfg(target_os = "windows")]
+    restore_bounds: Option<sdl2::rect::Rect>,
 }
 
 /// Set at window creation; false on the software renderer.
@@ -114,6 +116,8 @@ impl AppWindow {
             video_subsystem,
             backend,
             initial_size: (0, 0),
+            #[cfg(target_os = "windows")]
+            restore_bounds: None,
         };
         // Not the configured size: a driver that owns the screen opens at the panel.
         window.initial_size = window.size();
@@ -125,13 +129,36 @@ impl AppWindow {
     }
 
     #[cfg(target_os = "windows")]
-    pub fn toggle_maximized(&mut self) {
+    pub fn is_maximized(&self) -> bool {
+        self.restore_bounds.is_some()
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn toggle_maximized(&mut self) -> Result<(), String> {
+        use sdl2::{rect::Rect, video::WindowPos};
+
         let window = self.backend.window_mut();
-        if window.is_maximized() {
-            window.restore();
-        } else {
-            window.maximize();
-        }
+        let (target, restore_bounds) = match self.restore_bounds {
+            Some(bounds) => (bounds, None),
+            None => {
+                let (x, y) = window.position();
+                let (width, height) = window.size();
+                let available = self
+                    .video_subsystem
+                    .display_usable_bounds(window.display_index()?)?;
+                (available, Some(Rect::new(x, y, width, height)))
+            }
+        };
+
+        window
+            .set_size(target.width(), target.height())
+            .map_err(|err| err.to_string())?;
+        window.set_position(
+            WindowPos::Positioned(target.x()),
+            WindowPos::Positioned(target.y()),
+        );
+        self.restore_bounds = restore_bounds;
+        Ok(())
     }
 
     /// The context Servo renders into: an FBO in our GL context, or swgl's CPU
@@ -274,6 +301,11 @@ impl AppWindow {
         let window = self.sdl2_window();
         let held =
             window.is_maximized() || window.fullscreen_state() != sdl2::video::FullscreenType::Off;
+        #[cfg(target_os = "windows")]
+        if let Some(bounds) = self.restore_bounds {
+            let size = (bounds.width(), bounds.height());
+            return (size != self.initial_size).then_some(size);
+        }
         let size = window.size();
         (!held && size != self.initial_size).then_some(size)
     }
